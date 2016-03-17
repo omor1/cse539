@@ -40,8 +40,12 @@ int main(int argx, char *argv[])
 			"expired. The default security profile of mbed TLS "
 			"disallows the use of MD5 and of RSA keys less than "
 			"2048 bits in size, both of which the Raghu "
-			"certificate uses.\n");
+			"certificate uses.\n\n");
 	mbedtls_x509_crt_verify_info(buf, sizeof(buf), "", flags);
+	printf("%s\n", buf);
+	
+	// print Raghu certificate information
+	mbedtls_x509_crt_info(buf, sizeof(buf), "", &raghu_crt);
 	printf("%s\n", buf);
 	
 	// print Raghu public key
@@ -50,11 +54,13 @@ int main(int argx, char *argv[])
 			&raghu_rsa_k->N, 10, stdout);
 	mbedtls_mpi_write_file("Raghu public key exponent: ",
 			&raghu_rsa_k->E, 10, stdout);
+	printf("\n");
 	
 	// print Raghu private key
 	mbedtls_rsa_context *raghu_rsa_pk = mbedtls_pk_rsa(raghu_pk);
 	mbedtls_mpi_write_file("Raghu private key exponent: ",
 			&raghu_rsa_pk->D, 10, stdout);
+	printf("\n");
 	
 	// print Trustcenter public key
 	mbedtls_rsa_context *trust_rsa_k = mbedtls_pk_rsa(trustcenter_crt.pk);
@@ -62,16 +68,17 @@ int main(int argx, char *argv[])
 			&trust_rsa_k->N, 10, stdout);
 	mbedtls_mpi_write_file("Trustcenter public key exponent: ",
 			&trust_rsa_k->E, 10, stdout);
+	printf("\n");
 	
 	// print Raghu certificate signature
 	printf("Raghu certificate signature: 0x");
 	for(size_t i = 0; i < raghu_crt.sig.len; i++)
 		printf("%02hhX", raghu_crt.sig.p[i]);
-	printf("\n");
+	printf("\n\n");
 	
 	// encrypt and decrypt string
 	const unsigned char plain[] = "Our names are Omri Mor and Ravi Teja "
-			"Thutari. We are enrolled in CSE 539";
+			"Thutari. We are enrolled in CSE 539.";
 	unsigned char cipher[128];
 	size_t cipher_len;
 	unsigned char plain_2[128];
@@ -83,7 +90,7 @@ int main(int argx, char *argv[])
 	mbedtls_ctr_drbg_init(&ctr_drbg);
 	mbedtls_ctr_drbg_seed(&ctr_drbg, mbedtls_entropy_func, &entropy,
 			NULL, 0);
-	mbedtls_pk_encrypt(&raghu_pk, plain, sizeof(plain),
+	mbedtls_pk_encrypt(&raghu_crt.pk, plain, sizeof(plain),
 			cipher, &cipher_len, sizeof(cipher),
 			mbedtls_ctr_drbg_random, &ctr_drbg);
 	printf("Ciphertext: 0x");
