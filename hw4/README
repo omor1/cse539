@@ -1,0 +1,21 @@
+To compile hw4.c, use the provided Makefile and the make program:
+	make
+
+To execute the compiled program:
+	./hw4
+
+hw4.c requires the mbed TLS library (formerly known as PolarSSL). The easiest
+method of acquiring it is installing it from the distribution repositories; it
+exists in the Debian, Ubuntu, Fedora, and Arch Linux repositories, amongst
+others. If you cannot or do not wish to install it from the distribution
+repositories, you can instead download the source from https://tls.mbed.org and
+compile it. To download, compile and install mbed TLS in a custom location:
+	curl -O https://tls.mbed.org/download/mbedtls-2.2.1-gpl.tgz
+	tar xvfz mbedtls-2.2.1-gpl.tgz
+	cd mbedtls-2.2.1-gpl
+	make
+	make install DESTDIR=/path/to/dir
+
+If you compiled and installed mbed TLS in a custom location, you will need to
+compile hw4.c thus:
+	make CFLAGS=-I/path/to/dir/include LDFLAGS=-L/path/to/dir/lib

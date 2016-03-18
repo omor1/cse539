@@ -7,7 +7,7 @@
 #include <mbedtls/x509.h>
 #include <mbedtls/x509_crt.h>
 
-int main(int argx, char *argv[])
+int main(int argc, char *argv[])
 {
 	// create variables
 	mbedtls_x509_crt raghu_crt;
