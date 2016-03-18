@@ -20,11 +20,11 @@ int main(int argc, char *argv[])
 	mbedtls_x509_crt_init(&trustcenter_crt);
 	
 	// read from files
-	mbedtls_x509_crt_parse_file(&raghu_crt, "certificate/Raghupub.cer");
+	mbedtls_x509_crt_parse_file(&raghu_crt, "certificate/Raghupub.pem");
 	mbedtls_pk_parse_keyfile(&raghu_pk, "certificate/Raghupri.pem",
 			"raghu");
 	mbedtls_x509_crt_parse_file(&trustcenter_crt,
-			"certificate/Trustcenter.cer");
+			"certificate/Trustcenter.pem");
 
 	// verify Raghu certificate
 	// This will complain about expiration, unacceptable hash, and

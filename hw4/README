@@ -19,3 +19,7 @@ compile it. To download, compile and install mbed TLS in a custom location:
 If you compiled and installed mbed TLS in a custom location, you will need to
 compile hw4.c thus:
 	make CFLAGS=-I/path/to/dir/include LDFLAGS=-L/path/to/dir/lib
+
+A note about the certificates: all certificates were transformed into the PEM
+format, as it is more standard. Both the original certificates and the new ones
+are in the certificate directory.
