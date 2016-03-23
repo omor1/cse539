@@ -35,20 +35,23 @@ int main(int argc, char *argv[])
 	mbedtls_x509_crt_verify(&raghu_crt, &trustcenter_crt, NULL, NULL,
 			&flags, NULL, NULL);
 	char buf[1024];
-	printf("Should complain about expiration, unacceptable hash, and "
-			"unacceptable key. This is OK. The certificate is "
-			"expired. The default security profile of mbed TLS "
-			"disallows the use of MD5 and of RSA keys less than "
-			"2048 bits in size, both of which the Raghu "
-			"certificate uses.\n\n");
+	printf("Note: verification should complain about expiration, "
+			"unacceptable hash, and unacceptable key. This is OK. "
+			"The certificate is expired. The default security "
+			"profile of mbed TLS disallows the use of MD5 and of "
+			"RSA keys less than 2048 bits in size, both of which "
+			"the Raghu certificate uses.\n\n");
+	printf("Verifying...\n");
 	mbedtls_x509_crt_verify_info(buf, sizeof(buf), "", flags);
 	printf("%s\n", buf);
 	
 	// print Raghu certificate information
+	printf("Printing Raghu's certificate information...\n");
 	mbedtls_x509_crt_info(buf, sizeof(buf), "", &raghu_crt);
 	printf("%s\n", buf);
 	
 	// print Raghu public key
+	printf("Printing Raghu's public key...\n");
 	mbedtls_rsa_context *raghu_rsa_k = mbedtls_pk_rsa(raghu_crt.pk);
 	mbedtls_mpi_write_file("Raghu public key modulus: ",
 			&raghu_rsa_k->N, 10, stdout);
@@ -57,12 +60,14 @@ int main(int argc, char *argv[])
 	printf("\n");
 	
 	// print Raghu private key
+	printf("Printing Raghu's private key...\n");
 	mbedtls_rsa_context *raghu_rsa_pk = mbedtls_pk_rsa(raghu_pk);
 	mbedtls_mpi_write_file("Raghu private key exponent: ",
 			&raghu_rsa_pk->D, 10, stdout);
 	printf("\n");
 	
 	// print Trustcenter public key
+	printf("Printing the Trustcenter public key...\n");
 	mbedtls_rsa_context *trust_rsa_k = mbedtls_pk_rsa(trustcenter_crt.pk);
 	mbedtls_mpi_write_file("Trustcenter public key modulus: ",
 			&trust_rsa_k->N, 10, stdout);
@@ -71,12 +76,14 @@ int main(int argc, char *argv[])
 	printf("\n");
 	
 	// print Raghu certificate signature
+	printf("Printing Raghu's certificate signature...\n");
 	printf("Raghu certificate signature: 0x");
 	for(size_t i = 0; i < raghu_crt.sig.len; i++)
 		printf("%02hhX", raghu_crt.sig.p[i]);
 	printf("\n\n");
 	
 	// encrypt and decrypt string
+	printf("Encrypting and decrypting string...\n");
 	const unsigned char plain[] = "Our names are Omri Mor and Ravi Teja "
 			"Thutari. We are enrolled in CSE 539.";
 	unsigned char cipher[128];
