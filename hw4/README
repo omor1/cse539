@@ -23,3 +23,7 @@ compile hw4.c thus:
 A note about the certificates: all certificates were transformed into the PEM
 format, as it is more standard. Both the original certificates and the new ones
 are in the certificate directory.
+
+A note about encryption/decryption: mbed TLS uses a random number generator in
+its encryption/decryption process. Every run of the program will result in a
+different ciphertext. This is good, as it means that a replay attack is harder.
