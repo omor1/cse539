@@ -6,6 +6,25 @@
 
 using namespace RSAUtil;
 
+BigInt blind_sig(BigInt *m, BigInt *rand, RSA *rsa)
+{
+	auto sig = rsa->encrypt(*rand);
+	sig *= *m;
+	sig = sig % rsa->getModulus();
+	return sig;
+}
+
+BigInt sign(BigInt m, RSA rsa)
+{
+	return rsa.decrypt(m);
+}
+
+BigInt unblind_sig(BigInt sig, BigInt rand, RSA rsa)
+{
+	sig *= modInverse(rand, rsa.getModulus());
+	return sig % rsa.getModulus();
+}
+
 int main(int argc, char *argv[])
 {
 	std::cout << "1: Encryption and Decryption" << std::endl;
@@ -76,14 +95,11 @@ int main(int argc, char *argv[])
 	BigInt m = 42;
 	std::cout << "Message: " << m.toHexString() << std::endl;
 	BigInt rand = dist(mt);
-	auto sig = bob.encrypt(rand);
-	sig *= m;
-	sig = sig % bob.getModulus();
+	auto sig = blind_sig(&m, &rand, &bob);
 	std::cout << "Blinded: " << sig.toHexString() << std::endl;
-	sig = bob.decrypt(sig);
+	sig = sign(sig, bob);
 	std::cout << "Blinded signature: " << sig.toHexString() << std::endl;
-	sig *= modInverse(rand, bob.getModulus());
-	sig = sig % bob.getModulus();
+	sig = unblind_sig(sig, rand, bob);
 	std::cout << "Signature: " << sig.toHexString() << std::endl;
 	std::cout << "Verify: " << bob.encrypt(sig).toHexString() << std::endl;
 
