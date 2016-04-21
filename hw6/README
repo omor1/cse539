@@ -1,0 +1,14 @@
+CSE 539
+Homework 6
+
+Group Members:
+Omri Mor
+Ravi Teja Thutari
+
+hw6.cpp requires C++11 support, specifically the  <array> and <random> headers
+and the `auto` specifier. Compile it with the `-std=c++11` or `-std=gnu++11`
+flag.
+
+One thing of note: in question 1, part d, one combination of non-primes
+resulted in decryption nevertheless working. These are the Carmichael Numbers
+52633 and 62745.
